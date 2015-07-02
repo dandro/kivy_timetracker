@@ -2,7 +2,6 @@ __author__ = 'dandro'
 
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
-from kivy.graphics import Color, Rectangle
 from kivy.clock import Clock
 import time
 

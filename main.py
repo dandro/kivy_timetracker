@@ -25,9 +25,7 @@ class PyStalkerApp(App):
 		return MainUI()
 
 	# def on_start(self):
-		# Window.size = (400, 600)
-		# Window.fullscreen = 'fake'
-		# Window.resizable = True
+		# CALLBACK
 
 	def on_stop(self):
 		Logger.info('App: Aaaargh I\'m dying!')
