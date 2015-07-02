@@ -17,20 +17,16 @@ class TimerLabel(Widget):
 		# init attributes
 		self.parent_size = parent_size
 		self.size = (self.parent_size[0], 50)
-		self.pos = (0, self.parent_size[1] - self.height)
+		self.relative_top = self.parent_size[1] - self.height - 100
+		self.pos = (0, self.relative_top)
 
 		# Create and Add time_label
-		self.time_label = Label(text=self.display_time(), pos=self.pos, size=self.size, font_size=24, markup=True)
+		self.time_label = Label(text=self.display_time(), pos=self.pos, size=self.size, font_size=22, markup=True)
 		self.add_widget(self.time_label)
-
-		# Set UI
-		with self.time_label.canvas:
-			Color(0, 0, 0, 0.12)
-			Rectangle(size=self.size, pos=self.pos)
 
 	@staticmethod
 	def display_time():
-		return "[b]" + time.asctime() + "[/b]"
+		return "[color=dfe9a2]" + time.asctime() + "[/color]"
 
 	def update_time(self, dt):
 		self.time_label.text = self.display_time()
