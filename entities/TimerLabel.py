@@ -3,7 +3,7 @@ __author__ = 'dandro'
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.clock import Clock
-import time
+import datetime
 
 
 class TimerLabel(Widget):
@@ -25,7 +25,7 @@ class TimerLabel(Widget):
 
 	@staticmethod
 	def display_time():
-		return "[color=dfe9a2]" + time.asctime() + "[/color]"
+		return "[color=dfe9a2]" + str(datetime.datetime.today()) + "[/color]"
 
 	def update_time(self, dt):
 		self.time_label.text = self.display_time()

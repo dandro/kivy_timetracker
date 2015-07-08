@@ -7,6 +7,7 @@ from kivy.uix.image import Image
 
 from entities.TimerLabel import TimerLabel
 from entities.TimeRowForm import TimeRowForm
+from entities.MainController import MainController
 
 WINDOW_SIZE = 400, 768
 
@@ -15,6 +16,11 @@ class MainUI(Widget):
 	def __init__(self, **kwargs):
 		super(MainUI, self).__init__(**kwargs)
 		self.register_event_type('on_row_added')
+		self.controller = MainController()
+		self.build_ui()
+
+	def build_ui(self):
+		self.controller.mongo_init()
 
 		# Set MainUI Attributes
 		self.size = WINDOW_SIZE
@@ -36,8 +42,10 @@ class MainUI(Widget):
 		self.add_widget(self.layout_stack)
 
 	def on_row_added(self, text_project, text_description):
+		# self.controller.insert_new_log()
 		self.layout_stack.add_widget(Label(text=self.timer_label.time_label.text + " - \n" + text_project + " "
 		+ text_description, size_hint=(1., .1), markup=True))
+		self.controller.output()
 
 	@staticmethod
 	def rgba2float(r, g, b, a=1.0):
