@@ -5,7 +5,7 @@ import kivy
 kivy.require(kivy.__version__)
 
 from kivy.app import App
-from entities import MainUI
+from app import MainUI
 from kivy.logger import Logger
 from kivy.config import Config
 

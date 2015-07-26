@@ -9,9 +9,10 @@ WINDOW_SIZE = 400, 768
 
 
 class TimeRowForm(Widget):
-	def __init__(self, top, **kwargs):
+	def __init__(self, top, controller,  **kwargs):
 		super(TimeRowForm, self).__init__(**kwargs)
 
+		self.controller = controller
 		self.start_top = top
 		self.label_top = self.start_top - 50
 		self.text_project_top = self.label_top - 27
@@ -35,4 +36,4 @@ class TimeRowForm(Widget):
 		self.add_widget(self.submit_button)
 
 	def add_new_row(self, button):
-		self.parent.dispatch('on_row_added', self.text_project.text, self.text_description.text)
+		self.controller.dispatch('on_row_added', self.text_project.text, self.text_description.text)
