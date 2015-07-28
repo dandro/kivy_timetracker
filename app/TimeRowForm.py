@@ -36,3 +36,4 @@ class TimeRowForm(Widget):
 
 	def add_new_row(self, button):
 		self.controller.dispatch('on_row_added', self.text_project.text, self.text_description.text)
+		self.text_description.text = ''

@@ -23,6 +23,20 @@ class MainUI(Widget):
 		# Add Timer Label
 		self.add_widget(self.controller.timer_label)
 
+		# Add load day before button
+		self.controller.button_previous_day.size = 130, 30
+		self.controller.button_previous_day.text = 'Load Prev Day'
+		self.controller.button_previous_day.top = WINDOW_SIZE[1] - 10
+		self.controller.button_previous_day.right = 140
+		self.add_widget(self.controller.button_previous_day)
+
+		# Add load day before button
+		self.controller.button_next_day.size = 130, 30
+		self.controller.button_next_day.text = 'Load Next Day'
+		self.controller.button_next_day.top = WINDOW_SIZE[1] - 10
+		self.controller.button_next_day.right = WINDOW_SIZE[0] - 10
+		self.add_widget(self.controller.button_next_day)
+
 		# Add button up
 		self.controller.button_up.size = WINDOW_SIZE[0] - 20, 30
 		self.controller.button_up.text = 'Up'
@@ -39,6 +53,12 @@ class MainUI(Widget):
 
 		# Add Time Row Form
 		self.add_widget(self.controller.row_form)
+
+		# Add Button down
+		self.controller.button_report.size = 130, 30
+		self.controller.button_report.text = 'report'
+		self.controller.button_report.pos = 10, self.controller.row_form.submit_button_top
+		self.add_widget(self.controller.button_report)
 
 		# Set UI Stack Layout
 		self.controller.stack_layout.orientation = 'tb-lr'
