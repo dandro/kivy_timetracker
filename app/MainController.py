@@ -52,8 +52,10 @@ class MainController(Widget):
 
 	def build_stack_src(self, db):
 		# sort db rows by key/timestamp
-		db.getall().sort()
-		for key in db.getall():
+		row_set = set(db.getall())
+		row_list = list(row_set)
+		row_list.sort()
+		for key in row_list:
 			self.stack_src.append(db.get(key))
 		return self
 
