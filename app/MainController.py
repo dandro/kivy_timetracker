@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 from kivy.logger import Logger
 from app.TimerLabel import TimerLabel
 from app.TimeRowForm import TimeRowForm
+from app.TimeParser import TimeParser
 from pickledb import pickledb
 import time
 from datetime import date, timedelta
@@ -93,21 +94,10 @@ class MainController(Widget):
 		self.update_stack_view(limit)
 
 	def run_report(self, button):
-		pass
-	# 	report_src = self.db
-	# 	report_data = []
-	# 	for key in report_src.getall():
-	# 		current_row = report_src.get(key)
-	# 		group = self.group_by_project_title(current_row['project_title'], report_src)
-	# 		report_data.append(group)
-	#
-	# def group_by_project_title(self, needle, stack):
-	# 	for key in stack:
-	# 		if stack.get(key)['project_title'] == needle:
-	# 			stack.lpop()
+		TimeParser(self.db).parse_rows()
 
 	def update_stack_src(self, project_title, project_description):
-		row = self.build_row_dict(self.timer_label.time_label.text, project_title, project_description)
+		row = self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time, project_title, project_description)
 		self.stack_src.append(row)
 		return self
 
@@ -121,15 +111,17 @@ class MainController(Widget):
 		return self
 
 	@staticmethod
-	def build_row_dict(time, project_title, project_description):
+	def build_row_dict(time_text, time, project_title, project_description):
 		return {
+			'time_text': time_text,
 			'time': time,
 			'project_title': project_title,
 			'project_description': project_description
 		}
 
 	def on_row_added(self, project_title, project_description):
-		self.insert_row(self.build_row_dict(self.timer_label.time_label.text, project_title, project_description))
+		self.insert_row(self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time,
+			project_title, project_description))
 		self.update_stack_src(project_title, project_description)
 		self.update_stack_view(len(self.stack_src))
 
@@ -149,7 +141,7 @@ class MainController(Widget):
 
 	@staticmethod
 	def display_row_label(row_dict):
-		return Label(text=row_dict['time'] + " - \n" + row_dict['project_title'] + " "
+		return Label(text=row_dict['time_text'] + " - \n" + row_dict['project_title'] + " "
 		+ row_dict['project_description'], size_hint=(1., .1), markup=True)
 
 	@staticmethod

@@ -29,3 +29,4 @@ class TimerLabel(Widget):
 
 	def update_time(self, dt):
 		self.time_label.text = self.display_time()
+		self.time_label.time = str(datetime.datetime.today())
