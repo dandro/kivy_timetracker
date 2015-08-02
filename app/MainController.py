@@ -97,7 +97,8 @@ class MainController(Widget):
 		TimeParser(self.db).parse_rows()
 
 	def update_stack_src(self, project_title, project_description):
-		row = self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time, project_title, project_description)
+		row = self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time, project_title,
+			project_description)
 		self.stack_src.append(row)
 		return self
 
