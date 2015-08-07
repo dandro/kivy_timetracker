@@ -18,18 +18,18 @@ class TimerLabel(Widget):
 
 		# init attributes
 		self.parent_size = parent_size
-		self.size = (self.parent_size[0], 50)
-		self.relative_top = self.parent_size[1] - self.height - 100
-		self.pos = (0, self.relative_top)
+		self.size = (300, 50)
+		self.relative_top = self.parent_size[1] - self.height - 35
+		self.pos = (32, self.relative_top)
 
 		# Create and Add time_label
-		self.time_label = Label(text=self.display_time(), pos=self.pos, size=self.size, font_size=22, markup=True)
+		self.time_label = Label(text=self.display_time(), pos=self.pos, size=self.size, font_size=20, markup=True)
 		self.add_widget(self.time_label)
 
 	@staticmethod
 	def display_time():
 		# return "[color=dfe9a2]" + str(datetime.today()) + "[/color]"
-		return "[color=dfe9a2]" + time.strftime(TIME_FORMAT) + "[/color]"
+		return "[color=b2b2b2]" + time.strftime(TIME_FORMAT) + "[/color]"
 
 	def update_time(self, dt):
 		self.time_label.text = self.display_time()

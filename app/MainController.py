@@ -8,29 +8,31 @@ from kivy.logger import Logger
 from app.TimerLabel import TimerLabel
 from app.TimeRowForm import TimeRowForm
 from app.TimeParser import TimeParser
+from app.StackRowLabel import StackRowLabel
 from pickledb import pickledb
 from datetime import date, timedelta, datetime
 import os.path
 
-ROWS_IN_STACK = 6
+ROWS_IN_STACK = 7
 
 
 class MainController(Widget):
 	def __init__(self, window_size, **kwargs):
 		super(MainController, self).__init__(**kwargs)
 		self.name = "Main Controller"
-		self.register_event_type('on_row_added')
 		self.timer_label = TimerLabel(parent_size=window_size)
 		self.current_day = date.today()
+		self.current_day_display = Label(text=self.update_current_day_display(), markup=True)
 		self.db = self.get_db_file()
 		self.stack_current_limit = 0
 
 		self.stack_src = []
+		self.submit_button = Button()
 		self.button_previous_day = Button()
 		self.button_next_day = Button()
 		self.button_up = Button()
 		self.button_down = Button()
-		self.row_form = TimeRowForm(start_top=self.timer_label.relative_top, window_size=window_size, controller=self)
+		self.row_form = TimeRowForm()
 		self.button_report = Button()
 		self.stack_layout = StackLayout()
 
@@ -39,6 +41,7 @@ class MainController(Widget):
 	def get_db_file(self, today=date.today()):
 		# Create today file if it doesn't exists
 		self.current_day = today
+		self.current_day_display.text = self.update_current_day_display()
 		db_filename = "./db/" + str(self.current_day) + "_timelog.db"
 		if not os.path.isfile(db_filename):
 			timelog_file = open(db_filename, 'a')
@@ -46,6 +49,9 @@ class MainController(Widget):
 			timelog_file.close()
 
 		return pickledb(db_filename, False)
+
+	def update_current_day_display(self):
+		return '[color=b2b2b2]' + str(self.current_day.strftime('%a %d %b %Y')) + '[/color]'
 
 	def on_load(self):
 		self.build_stack_src(self.db).bind_buttons().update_stack_view(len(self.stack_src))
@@ -60,6 +66,7 @@ class MainController(Widget):
 		return self
 
 	def bind_buttons(self):
+		self.submit_button.bind(on_press=self.add_new_row)
 		self.button_previous_day.bind(on_press=self.load_previous_day)
 		self.button_next_day.bind(on_press=self.load_next_day)
 		self.button_up.bind(on_press=self.go_up)
@@ -119,18 +126,28 @@ class MainController(Widget):
 			'project_description': project_description
 		}
 
-	def on_row_added(self, project_title, project_description):
+	def add_new_row(self, button):
+		project_title = self.row_form.text_project.text
+		project_description = self.row_form.text_description.text
 		self.insert_row(self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time,
 			project_title, project_description))
 		self.update_stack_src(project_title, project_description)
 		self.update_stack_view(len(self.stack_src))
+		self.row_form.text_description.text = ''
+
+	def get_style_stack_row(self, row):
+		stack_row = self.display_row_label(self.stack_src[row])
+		stack_row.size = 300, 30
+		stack_row.pos_hint = {'right': 1, 'center_y': 0.5}
+		return stack_row
 
 	def update_stack_view(self, limit):
 		self.stack_current_limit = limit
 		stack_range = self.get_stack_range(limit)
 		self.stack_layout.clear_widgets()
 		for row in range(stack_range['start'], stack_range['limit']):
-			self.stack_layout.add_widget(self.display_row_label(self.stack_src[row]))
+			stack_row = self.get_style_stack_row(row)
+			self.stack_layout.add_widget(stack_row)
 
 		return self
 
@@ -142,7 +159,8 @@ class MainController(Widget):
 	@staticmethod
 	def display_row_label(row_dict):
 		return Label(text=row_dict['time_text'] + " - \n" + row_dict['project_title'] + " "
-		+ row_dict['project_description'], size_hint=(1., .1), markup=True)
+		+ row_dict['project_description'], size_hint=(1., .1), pos=(0, 0), markup=True)
+		# return StackRowLabel(row_dict['time_text'], row_dict['project_title'] + row_dict['project_description'])
 
 	@staticmethod
 	def rgba2float(r, g, b, a=1.0):
