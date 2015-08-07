@@ -9,8 +9,7 @@ from app.TimerLabel import TimerLabel
 from app.TimeRowForm import TimeRowForm
 from app.TimeParser import TimeParser
 from pickledb import pickledb
-import time
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import os.path
 
 ROWS_IN_STACK = 6
@@ -97,7 +96,8 @@ class MainController(Widget):
 		TimeParser(self.db).parse_rows()
 
 	def update_stack_src(self, project_title, project_description):
-		row = self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time, project_title, project_description)
+		row = self.build_row_dict(self.timer_label.time_label.text, self.timer_label.time_label.time, project_title,
+			project_description)
 		self.stack_src.append(row)
 		return self
 
@@ -106,7 +106,7 @@ class MainController(Widget):
 		return self
 
 	def insert_row(self, row):
-		self.db.set(str(time.time()), row)
+		self.db.set(str(datetime.now()), row)
 		self.db.dump()
 		return self
 

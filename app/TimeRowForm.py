@@ -4,6 +4,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.properties import ObjectProperty
 
 
 class TimeRowForm(Widget):
@@ -13,9 +14,16 @@ class TimeRowForm(Widget):
 		self.start_top = start_top
 		self.window_size = window_size
 		self.label_top = self.start_top - 50
+
+		self.text_project = ObjectProperty()
 		self.text_project_top = self.label_top - 27
+
+		self.text_description = ObjectProperty()
 		self.text_description_top = self.text_project_top - 91
+
+		self.submit_button = ObjectProperty()
 		self.submit_button_top = self.text_description_top - 40
+
 		self.build_ui()
 
 	def build_ui(self):
