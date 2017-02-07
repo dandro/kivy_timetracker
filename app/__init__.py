@@ -1,5 +1,3 @@
-__author__ = 'dandro'
-
 import TimerLabel
 import MainUI
 import TimeRowForm
